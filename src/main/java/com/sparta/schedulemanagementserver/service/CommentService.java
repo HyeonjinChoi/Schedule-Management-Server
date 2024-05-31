@@ -75,6 +75,30 @@ public class CommentService {
         return commentId;
     }
 
+    public Long deleteComment(Long todoId, Long commentId) {
+        // 예외 처리: 선택한 일정의 ID나 댓글의 ID를 입력 받지 않은 경우
+        if (todoId == null || commentId == null) {
+            throw new IllegalArgumentException("선택한 일정이나 댓글의 ID를 입력 받지 않았습니다.");
+        }
+
+        // 예외 처리: 일정이 DB에 저장되지 않은 경우
+        Optional<Todo> todoOptional = todoRepository.findById(todoId);
+        if (todoOptional.isEmpty()) {
+            throw new IllegalArgumentException("일정이 DB에 저장되지 않았습니다.");
+        }
+
+        // 예외 처리: 댓글이 DB에 저장되지 않은 경우
+        Optional<Comment> commentOptional = commentRepository.findById(commentId);
+        if (commentOptional.isEmpty()) {
+            throw new IllegalArgumentException("댓글이 DB에 저장되지 않았습니다.");
+        }
+
+        // 댓글 삭제
+        commentRepository.delete(findComment(commentId));
+
+        return commentId;
+    }
+
     private Comment findComment(Long id) {
         return commentRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("선택한 댓글은 존재하지 않습니다.")
