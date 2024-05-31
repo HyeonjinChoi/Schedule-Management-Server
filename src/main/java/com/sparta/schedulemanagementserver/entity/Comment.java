@@ -20,23 +20,23 @@ public class Comment {
 
     @Column(name = "contents", nullable = false, length = 500)
     private String contents;
-    @Column(name = "todo", nullable = false)
-    private String todo;
     @Column(name = "username", nullable = false)
     private String username;
     @Column(name = "date", nullable = false)
     private LocalDate date;
+    @ManyToOne
+    @JoinColumn(name = "todo_id")
+    private Todo todo;
 
-    public Comment(CommentRequestDto commentRequestDto) {
+    public Comment(CommentRequestDto commentRequestDto, Todo todo) {
         this.contents = commentRequestDto.getContents();
-        this.todo = commentRequestDto.getTodo();
+        this.todo = todo;
         this.username = commentRequestDto.getUsername();
         this.date = LocalDate.now();
     }
 
     public void update(CommentRequestDto commentRequestDto) {
         this.contents = commentRequestDto.getContents();
-        this.todo = commentRequestDto.getTodo();
         this.username = commentRequestDto.getUsername();
         this.date = LocalDate.now();
     }

@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,6 +30,8 @@ public class Todo {
     private String password;
     @Column(name = "date", nullable = false)
     private LocalDate date;
+    @OneToMany(mappedBy = "todo")
+    private List<Comment> commentList = new ArrayList<>();
 
     public Todo(TodoRequestDto todoRequestDto) {
         this.title = todoRequestDto.getTitle();
